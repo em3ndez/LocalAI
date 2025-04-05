@@ -79,6 +79,60 @@
       sha256: 8ccc5cd1f1b3602548715ae25a66ed73fd5dc68a210412eea643eb20eb75a135
       uri: huggingface://ggml-org/gemma-3-1b-it-GGUF/gemma-3-1b-it-Q4_K_M.gguf
 - !!merge <<: *gemma3
+  name: "gemma-3-12b-it-qat"
+  urls:
+    - https://huggingface.co/google/gemma-3-12b-it
+    - https://huggingface.co/vinimuchulski/gemma-3-12b-it-qat-q4_0-gguf
+  description: |
+    This model corresponds to the 12B instruction-tuned version of the Gemma 3 model in GGUF format using Quantization Aware Training (QAT). The GGUF corresponds to Q4_0 quantization.
+
+    Thanks to QAT, the model is able to preserve similar quality as bfloat16 while significantly reducing the memory requirements to load the model.
+
+    You can find the half-precision version here.
+  overrides:
+    parameters:
+      model: gemma-3-12b-it-q4_0.gguf
+  files:
+    - filename: gemma-3-12b-it-q4_0.gguf
+      sha256: 6f1bb5f455414f7b46482bda51cbfdbf19786e21a5498c4403fdfc03d09b045c
+      uri: huggingface://vinimuchulski/gemma-3-12b-it-qat-q4_0-gguf/gemma-3-12b-it-q4_0.gguf
+- !!merge <<: *gemma3
+  name: "gemma-3-4b-it-qat"
+  urls:
+    - https://huggingface.co/google/gemma-3-4b-it
+    - https://huggingface.co/vinimuchulski/gemma-3-4b-it-qat-q4_0-gguf
+  description: |
+    This model corresponds to the 4B instruction-tuned version of the Gemma 3 model in GGUF format using Quantization Aware Training (QAT). The GGUF corresponds to Q4_0 quantization.
+
+    Thanks to QAT, the model is able to preserve similar quality as bfloat16 while significantly reducing the memory requirements to load the model.
+
+    You can find the half-precision version here.
+  overrides:
+    parameters:
+      model: gemma-3-4b-it-q4_0.gguf
+  files:
+    - filename: gemma-3-4b-it-q4_0.gguf
+      sha256: 2ca493d426ffcb43db27132f183a0230eda4a3621e58b328d55b665f1937a317
+      uri: huggingface://vinimuchulski/gemma-3-4b-it-qat-q4_0-gguf/gemma-3-4b-it-q4_0.gguf
+- !!merge <<: *gemma3
+  name: "gemma-3-27b-it-qat"
+  urls:
+    - https://huggingface.co/google/gemma-3-27b-it
+    - https://huggingface.co/vinimuchulski/gemma-3-27b-it-qat-q4_0-gguf
+  description: |
+    This model corresponds to the 27B instruction-tuned version of the Gemma 3 model in GGUF format using Quantization Aware Training (QAT). The GGUF corresponds to Q4_0 quantization.
+
+    Thanks to QAT, the model is able to preserve similar quality as bfloat16 while significantly reducing the memory requirements to load the model.
+
+    You can find the half-precision version here.
+  overrides:
+    parameters:
+      model: gemma-3-27b-it-q4_0.gguf
+  files:
+    - filename: gemma-3-27b-it-q4_0.gguf
+      sha256: 45e586879bc5f5d7a5b6527e812952057ce916d9fc7ba16f7262ec9972c9e2a2
+      uri: huggingface://vinimuchulski/gemma-3-27b-it-qat-q4_0-gguf/gemma-3-27b-it-q4_0.gguf
+- !!merge <<: *gemma3
   name: "qgallouedec_gemma-3-27b-it-codeforces-sft"
   urls:
     - https://huggingface.co/qgallouedec/gemma-3-27b-it-codeforces-SFT
@@ -401,6 +455,21 @@
     - filename: burtenshaw_GemmaCoder3-12B-Q4_K_M.gguf
       sha256: 47f0a2848eeed783cb03336afd8cc69f6ee0e088e3cec11ab6d9fe16457dc3d4
       uri: huggingface://bartowski/burtenshaw_GemmaCoder3-12B-GGUF/burtenshaw_GemmaCoder3-12B-Q4_K_M.gguf
+- !!merge <<: *gemma3
+  name: "tesslate_synthia-s1-27b"
+  icon: https://cdn-uploads.huggingface.co/production/uploads/64d1129297ca59bcf7458d07/zgFDl7UvWhiPYqdote7XT.png
+  urls:
+    - https://huggingface.co/Tesslate/Synthia-S1-27b
+    - https://huggingface.co/bartowski/Tesslate_Synthia-S1-27b-GGUF
+  description: |
+    Synthia-S1-27b is a reasoning, AI model developed by Tesslate AI, fine-tuned specifically for advanced reasoning, coding, and RP usecases. Built upon the robust Gemma3 architecture, Synthia-S1-27b excels in logical reasoning, creative writing, and deep contextual understanding. It supports multimodal inputs (text and images) with a large 128K token context window, enabling complex analysis suitable for research, academic tasks, and enterprise-grade AI applications.
+  overrides:
+    parameters:
+      model: Tesslate_Synthia-S1-27b-Q4_K_M.gguf
+  files:
+    - filename: Tesslate_Synthia-S1-27b-Q4_K_M.gguf
+      sha256: d953bf7f802dc68f85a35360deb24b9a8b446af051e82c77f2f0759065d2aa71
+      uri: huggingface://bartowski/Tesslate_Synthia-S1-27b-GGUF/Tesslate_Synthia-S1-27b-Q4_K_M.gguf
 - &eurollm
   name: "eurollm-9b-instruct"
   icon: https://openeurollm.eu/_next/static/media/logo-dark.e7001867.svg
@@ -5514,7 +5583,73 @@
   files:
     - filename: all-hands_openhands-lm-1.5b-v0.1-Q4_K_M.gguf
       sha256: 30abd7860c4eb5f2f51546389407b0064360862f64ea55cdf95f97c6e155b3c6
-      uri: huggingface://bartowski/all-hands_openhands-lm-1.5b-v0.1-GGUF/all-hands_openhands-lm-1.5b-v0.1-Q4_K_M.ggu
+      uri: huggingface://bartowski/all-hands_openhands-lm-1.5b-v0.1-GGUF/all-hands_openhands-lm-1.5b-v0.1-Q4_K_M.gguf
+- !!merge <<: *qwen25
+  name: "katanemo_arch-function-chat-7b"
+  urls:
+    - https://huggingface.co/katanemo/Arch-Function-Chat-7B
+    - https://huggingface.co/bartowski/katanemo_Arch-Function-Chat-7B-GGUF
+  description: |
+    The Arch-Function-Chat collection builds upon the Katanemo's Arch-Function collection by extending its capabilities beyond function calling. This new collection maintains the state-of-the-art(SOTA) function calling performance of the original collection while adding powerful new features that make it even more versatile in real-world applications.
+
+    In addition to function calling capabilities, this collection now offers:
+
+        Clarify & refine: Generates natural follow-up questions to collect missing information for function calling
+        Interpret & respond: Provides human-friendly responses based on function execution results
+        Context management: Mantains context in complex multi-turn interactions
+
+    Note: Arch-Function-Chat is now the primarly LLM used in then open source Arch Gateway - An AI-native proxy for agents. For more details about the project, check out the Github README.
+  overrides:
+    parameters:
+      model: katanemo_Arch-Function-Chat-7B-Q4_K_M.gguf
+  files:
+    - filename: katanemo_Arch-Function-Chat-7B-Q4_K_M.gguf
+      sha256: 6fd603511076ffea3697c8a76d82c054781c5e11f134b937a66cedfc49b3d2c5
+      uri: huggingface://bartowski/katanemo_Arch-Function-Chat-7B-GGUF/katanemo_Arch-Function-Chat-7B-Q4_K_M.gguf
+- !!merge <<: *qwen25
+  name: "katanemo_arch-function-chat-1.5b"
+  urls:
+    - https://huggingface.co/katanemo/Arch-Function-Chat-1.5B
+    - https://huggingface.co/bartowski/katanemo_Arch-Function-Chat-1.5B-GGUF
+  description: |
+    The Arch-Function-Chat collection builds upon the Katanemo's Arch-Function collection by extending its capabilities beyond function calling. This new collection maintains the state-of-the-art(SOTA) function calling performance of the original collection while adding powerful new features that make it even more versatile in real-world applications.
+
+    In addition to function calling capabilities, this collection now offers:
+
+        Clarify & refine: Generates natural follow-up questions to collect missing information for function calling
+        Interpret & respond: Provides human-friendly responses based on function execution results
+        Context management: Mantains context in complex multi-turn interactions
+
+    Note: Arch-Function-Chat is now the primarly LLM used in then open source Arch Gateway - An AI-native proxy for agents. For more details about the project, check out the Github README.
+  overrides:
+    parameters:
+      model: katanemo_Arch-Function-Chat-1.5B-Q4_K_M.gguf
+  files:
+    - filename: katanemo_Arch-Function-Chat-1.5B-Q4_K_M.gguf
+      sha256: 5bfcb72803745c374a90b0ceb60f347a8c7d1239960cce6a2d22cc1276236098
+      uri: huggingface://bartowski/katanemo_Arch-Function-Chat-1.5B-GGUF/katanemo_Arch-Function-Chat-1.5B-Q4_K_M.gguf
+- !!merge <<: *qwen25
+  name: "katanemo_arch-function-chat-3b"
+  urls:
+    - https://huggingface.co/katanemo/Arch-Function-Chat-3B
+    - https://huggingface.co/bartowski/katanemo_Arch-Function-Chat-3B-GGUF
+  description: |
+    The Arch-Function-Chat collection builds upon the Katanemo's Arch-Function collection by extending its capabilities beyond function calling. This new collection maintains the state-of-the-art(SOTA) function calling performance of the original collection while adding powerful new features that make it even more versatile in real-world applications.
+
+    In addition to function calling capabilities, this collection now offers:
+
+        Clarify & refine: Generates natural follow-up questions to collect missing information for function calling
+        Interpret & respond: Provides human-friendly responses based on function execution results
+        Context management: Mantains context in complex multi-turn interactions
+
+    Note: Arch-Function-Chat is now the primarly LLM used in then open source Arch Gateway - An AI-native proxy for agents. For more details about the project, check out the Github README.
+  overrides:
+    parameters:
+      model: katanemo_Arch-Function-Chat-3B-Q4_K_M.gguf
+  files:
+    - filename: katanemo_Arch-Function-Chat-3B-Q4_K_M.gguf
+      sha256: f59dbef397bf1364b5f0a2c23a7f67c40ec63cc666036c4e7615fa7d79d4e1a0
+      uri: huggingface://bartowski/katanemo_Arch-Function-Chat-3B-GGUF/katanemo_Arch-Function-Chat-3B-Q4_K_M.gguf
 - &llama31
   url: "github:mudler/LocalAI/gallery/llama3.1-instruct.yaml@master" ## LLama3.1
   icon: https://avatars.githubusercontent.com/u/153379578
