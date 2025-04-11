@@ -6,7 +6,7 @@ BINARY_NAME=local-ai
 DETECT_LIBS?=true
 
 # llama.cpp versions
-CPPLLAMA_VERSION?=f01bd02376f919b05ee635f438311be8dfc91d7c
+CPPLLAMA_VERSION?=64eda5deb9859e87a020e56bab5d2f9ca956f1de
 
 # whisper.cpp version
 WHISPER_REPO?=https://github.com/ggerganov/whisper.cpp
@@ -21,8 +21,8 @@ BARKCPP_REPO?=https://github.com/PABannier/bark.cpp.git
 BARKCPP_VERSION?=v1.0.0
 
 # stablediffusion.cpp (ggml)
-STABLEDIFFUSION_GGML_REPO?=https://github.com/leejet/stable-diffusion.cpp
-STABLEDIFFUSION_GGML_VERSION?=19d876ee300a055629926ff836489901f734f2b7
+STABLEDIFFUSION_GGML_REPO?=https://github.com/richiejp/stable-diffusion.cpp
+STABLEDIFFUSION_GGML_VERSION?=6c848a2e0053c86984023570e706aa212933d50d
 
 ONNX_VERSION?=1.20.0
 ONNX_ARCH?=x64
@@ -260,11 +260,7 @@ backend/go/image/stablediffusion-ggml/libsd.a: sources/stablediffusion-ggml.cpp
 	$(MAKE) -C backend/go/image/stablediffusion-ggml libsd.a
 
 backend-assets/grpc/stablediffusion-ggml: backend/go/image/stablediffusion-ggml/libsd.a backend-assets/grpc
-	CGO_LDFLAGS="$(CGO_LDFLAGS)" C_INCLUDE_PATH=$(CURDIR)/backend/go/image/stablediffusion-ggml/ LIBRARY_PATH=$(CURDIR)/backend/go/image/stablediffusion-ggml/ \
-	$(GOCMD) build -ldflags "$(LD_FLAGS)" -tags "$(GO_TAGS)" -o backend-assets/grpc/stablediffusion-ggml ./backend/go/image/stablediffusion-ggml/
-ifneq ($(UPX),)
-	$(UPX) backend-assets/grpc/stablediffusion-ggml
-endif
+	$(MAKE) -C backend/go/image/stablediffusion-ggml stablediffusion-ggml
 
 sources/onnxruntime:
 	mkdir -p sources/onnxruntime
@@ -809,7 +805,8 @@ docker-aio-all:
 
 docker-image-intel:
 	docker build \
-		--build-arg BASE_IMAGE=intel/oneapi-basekit:2025.0.0-0-devel-ubuntu22.04 \
+		--progress plain \
+		--build-arg BASE_IMAGE=intel/oneapi-basekit:2025.1.0-0-devel-ubuntu24.04 \
 		--build-arg IMAGE_TYPE=$(IMAGE_TYPE) \
 		--build-arg GO_TAGS="none" \
 		--build-arg MAKEFLAGS="$(DOCKER_MAKEFLAGS)" \
@@ -817,7 +814,7 @@ docker-image-intel:
 
 docker-image-intel-xpu:
 	docker build \
-		--build-arg BASE_IMAGE=intel/oneapi-basekit:2025.0.0-0-devel-ubuntu22.04 \
+		--build-arg BASE_IMAGE=intel/oneapi-basekit:2025.1.0-0-devel-ubuntu22.04 \
 		--build-arg IMAGE_TYPE=$(IMAGE_TYPE) \
 		--build-arg GO_TAGS="none" \
 		--build-arg MAKEFLAGS="$(DOCKER_MAKEFLAGS)" \
