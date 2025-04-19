@@ -6,7 +6,7 @@ BINARY_NAME=local-ai
 DETECT_LIBS?=true
 
 # llama.cpp versions
-CPPLLAMA_VERSION?=f01bd02376f919b05ee635f438311be8dfc91d7c
+CPPLLAMA_VERSION?=6408210082cc0a61b992b487be7e2ff2efbb9e36
 
 # whisper.cpp version
 WHISPER_REPO?=https://github.com/ggerganov/whisper.cpp
@@ -21,8 +21,8 @@ BARKCPP_REPO?=https://github.com/PABannier/bark.cpp.git
 BARKCPP_VERSION?=v1.0.0
 
 # stablediffusion.cpp (ggml)
-STABLEDIFFUSION_GGML_REPO?=https://github.com/leejet/stable-diffusion.cpp
-STABLEDIFFUSION_GGML_VERSION?=19d876ee300a055629926ff836489901f734f2b7
+STABLEDIFFUSION_GGML_REPO?=https://github.com/richiejp/stable-diffusion.cpp
+STABLEDIFFUSION_GGML_VERSION?=53e3b17eb3d0b5760ced06a1f98320b68b34aaae
 
 ONNX_VERSION?=1.20.0
 ONNX_ARCH?=x64
@@ -260,11 +260,7 @@ backend/go/image/stablediffusion-ggml/libsd.a: sources/stablediffusion-ggml.cpp
 	$(MAKE) -C backend/go/image/stablediffusion-ggml libsd.a
 
 backend-assets/grpc/stablediffusion-ggml: backend/go/image/stablediffusion-ggml/libsd.a backend-assets/grpc
-	CGO_LDFLAGS="$(CGO_LDFLAGS)" C_INCLUDE_PATH=$(CURDIR)/backend/go/image/stablediffusion-ggml/ LIBRARY_PATH=$(CURDIR)/backend/go/image/stablediffusion-ggml/ \
-	$(GOCMD) build -ldflags "$(LD_FLAGS)" -tags "$(GO_TAGS)" -o backend-assets/grpc/stablediffusion-ggml ./backend/go/image/stablediffusion-ggml/
-ifneq ($(UPX),)
-	$(UPX) backend-assets/grpc/stablediffusion-ggml
-endif
+	$(MAKE) -C backend/go/image/stablediffusion-ggml CGO_LDFLAGS="$(CGO_LDFLAGS)" stablediffusion-ggml
 
 sources/onnxruntime:
 	mkdir -p sources/onnxruntime
@@ -509,18 +505,10 @@ protogen-go-clean:
 	$(RM) bin/*
 
 .PHONY: protogen-python
-protogen-python: autogptq-protogen bark-protogen coqui-protogen diffusers-protogen exllama2-protogen rerankers-protogen transformers-protogen kokoro-protogen vllm-protogen faster-whisper-protogen
+protogen-python: bark-protogen coqui-protogen diffusers-protogen exllama2-protogen rerankers-protogen transformers-protogen kokoro-protogen vllm-protogen faster-whisper-protogen
 
 .PHONY: protogen-python-clean
-protogen-python-clean: autogptq-protogen-clean bark-protogen-clean coqui-protogen-clean diffusers-protogen-clean  exllama2-protogen-clean rerankers-protogen-clean transformers-protogen-clean kokoro-protogen-clean vllm-protogen-clean faster-whisper-protogen-clean
-
-.PHONY: autogptq-protogen
-autogptq-protogen:
-	$(MAKE) -C backend/python/autogptq protogen
-
-.PHONY: autogptq-protogen-clean
-autogptq-protogen-clean:
-	$(MAKE) -C backend/python/autogptq protogen-clean
+protogen-python-clean: bark-protogen-clean coqui-protogen-clean diffusers-protogen-clean  exllama2-protogen-clean rerankers-protogen-clean transformers-protogen-clean kokoro-protogen-clean vllm-protogen-clean faster-whisper-protogen-clean
 
 .PHONY: bark-protogen
 bark-protogen:
@@ -597,7 +585,6 @@ vllm-protogen-clean:
 ## GRPC
 # Note: it is duplicated in the Dockerfile
 prepare-extra-conda-environments: protogen-python
-	$(MAKE) -C backend/python/autogptq
 	$(MAKE) -C backend/python/bark
 	$(MAKE) -C backend/python/coqui
 	$(MAKE) -C backend/python/diffusers
@@ -809,7 +796,8 @@ docker-aio-all:
 
 docker-image-intel:
 	docker build \
-		--build-arg BASE_IMAGE=intel/oneapi-basekit:2025.0.0-0-devel-ubuntu22.04 \
+		--progress plain \
+		--build-arg BASE_IMAGE=intel/oneapi-basekit:2025.1.0-0-devel-ubuntu24.04 \
 		--build-arg IMAGE_TYPE=$(IMAGE_TYPE) \
 		--build-arg GO_TAGS="none" \
 		--build-arg MAKEFLAGS="$(DOCKER_MAKEFLAGS)" \
@@ -817,7 +805,7 @@ docker-image-intel:
 
 docker-image-intel-xpu:
 	docker build \
-		--build-arg BASE_IMAGE=intel/oneapi-basekit:2025.0.0-0-devel-ubuntu22.04 \
+		--build-arg BASE_IMAGE=intel/oneapi-basekit:2025.1.0-0-devel-ubuntu22.04 \
 		--build-arg IMAGE_TYPE=$(IMAGE_TYPE) \
 		--build-arg GO_TAGS="none" \
 		--build-arg MAKEFLAGS="$(DOCKER_MAKEFLAGS)" \
