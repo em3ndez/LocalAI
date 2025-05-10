@@ -52,7 +52,7 @@ struct server_params
 {
     std::string hostname = "127.0.0.1";
     std::vector<std::string> api_keys;
-    std::string public_path = "examples/server/public";
+    std::string public_path = "tools/server/public";
     std::string chat_template = "";
     int32_t port = 8080;
     int32_t read_timeout = 600;
@@ -514,7 +514,7 @@ struct llama_server_context
             LOG_INFO("Multi Modal Mode Enabled", {});
             clp_ctx = clip_init(params.mmproj.path.c_str(), clip_context_params {
                 /* use_gpu */ has_gpu,
-                /*verbosity=*/ 1,
+                /*verbosity=*/ GGML_LOG_LEVEL_INFO,
             });
             if(clp_ctx == nullptr) {
                 LOG_ERR("unable to load clip model: %s", params.mmproj.path.c_str());
@@ -2644,7 +2644,9 @@ void RunServer(const std::string& server_address) {
   ServerBuilder builder;
   builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
   builder.RegisterService(&service);
-
+  builder.SetMaxMessageSize(50 * 1024 * 1024); // 50MB
+  builder.SetMaxSendMessageSize(50 * 1024 * 1024); // 50MB
+  builder.SetMaxReceiveMessageSize(50 * 1024 * 1024); // 50MB
   std::unique_ptr<Server> server(builder.BuildAndStart());
   std::cout << "Server listening on " << server_address << std::endl;
   server->Wait();
