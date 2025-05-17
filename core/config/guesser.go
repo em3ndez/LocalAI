@@ -4,8 +4,8 @@ import (
 	"os"
 	"path/filepath"
 
+	gguf "github.com/gpustack/gguf-parser-go"
 	"github.com/rs/zerolog/log"
-	gguf "github.com/thxcode/gguf-parser-go"
 )
 
 func guessDefaultsFromFile(cfg *BackendConfig, modelPath string, defaultCtx int) {
