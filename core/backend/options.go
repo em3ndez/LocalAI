@@ -94,12 +94,17 @@ func grpcModelOpts(c config.BackendConfig) *pb.ModelOptions {
 		lowVRAM = *c.LowVRAM
 	}
 
+	reranking := false
+	if c.Reranking != nil {
+		reranking = *c.Reranking
+	}
+
 	mmap := false
 	if c.MMap != nil {
 		mmap = *c.MMap
 	}
 
-	ctxSize := 1024
+	ctxSize := 4096
 	if c.ContextSize != nil {
 		ctxSize = *c.ContextSize
 	}
@@ -178,17 +183,13 @@ func grpcModelOpts(c config.BackendConfig) *pb.ModelOptions {
 		RopeFreqScale:       c.RopeFreqScale,
 		NUMA:                c.NUMA,
 		Embeddings:          embeddings,
+		Reranking:           reranking,
 		LowVRAM:             lowVRAM,
 		NGPULayers:          int32(nGPULayers),
 		MMap:                mmap,
 		MainGPU:             c.MainGPU,
 		Threads:             int32(*c.Threads),
 		TensorSplit:         c.TensorSplit,
-		// AutoGPTQ
-		ModelBaseName:    c.AutoGPTQ.ModelBaseName,
-		Device:           c.AutoGPTQ.Device,
-		UseTriton:        c.AutoGPTQ.Triton,
-		UseFastTokenizer: c.AutoGPTQ.UseFastTokenizer,
 		// RWKV
 		Tokenizer: c.Tokenizer,
 	}

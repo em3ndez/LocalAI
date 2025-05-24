@@ -2,11 +2,11 @@ package config
 
 import (
 	"context"
-	"embed"
 	"encoding/json"
 	"regexp"
 	"time"
 
+	rice "github.com/GeertJohan/go.rice"
 	"github.com/mudler/LocalAI/pkg/xsysinfo"
 	"github.com/rs/zerolog/log"
 )
@@ -19,20 +19,21 @@ type ApplicationConfig struct {
 	UploadLimitMB, Threads, ContextSize int
 	F16                                 bool
 	Debug                               bool
-	ImageDir                            string
-	AudioDir                            string
-	UploadDir                           string
-	ConfigsDir                          string
-	DynamicConfigsDir                   string
-	DynamicConfigsDirPollInterval       time.Duration
-	CORS                                bool
-	CSRF                                bool
-	PreloadJSONModels                   string
-	PreloadModelsFromPath               string
-	CORSAllowOrigins                    string
-	ApiKeys                             []string
-	P2PToken                            string
-	P2PNetworkID                        string
+	GeneratedContentDir                 string
+
+	ConfigsDir string
+	UploadDir  string
+
+	DynamicConfigsDir             string
+	DynamicConfigsDirPollInterval time.Duration
+	CORS                          bool
+	CSRF                          bool
+	PreloadJSONModels             string
+	PreloadModelsFromPath         string
+	CORSAllowOrigins              string
+	ApiKeys                       []string
+	P2PToken                      string
+	P2PNetworkID                  string
 
 	DisableWebUI                       bool
 	EnforcePredownloadScans            bool
@@ -46,7 +47,7 @@ type ApplicationConfig struct {
 
 	Galleries []Gallery
 
-	BackendAssets     embed.FS
+	BackendAssets     *rice.Box
 	AssetsDestination string
 
 	ExternalGRPCBackends map[string]string
@@ -197,7 +198,7 @@ func WithBackendAssetsOutput(out string) AppOption {
 	}
 }
 
-func WithBackendAssets(f embed.FS) AppOption {
+func WithBackendAssets(f *rice.Box) AppOption {
 	return func(o *ApplicationConfig) {
 		o.BackendAssets = f
 	}
@@ -279,15 +280,9 @@ func WithDebug(debug bool) AppOption {
 	}
 }
 
-func WithAudioDir(audioDir string) AppOption {
+func WithGeneratedContentDir(generatedContentDir string) AppOption {
 	return func(o *ApplicationConfig) {
-		o.AudioDir = audioDir
-	}
-}
-
-func WithImageDir(imageDir string) AppOption {
-	return func(o *ApplicationConfig) {
-		o.ImageDir = imageDir
+		o.GeneratedContentDir = generatedContentDir
 	}
 }
 

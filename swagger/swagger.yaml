@@ -555,7 +555,6 @@ definitions:
       model:
         type: string
       model_base_name:
-        description: AutoGPTQ
         type: string
       "n":
         description: Also part of the OpenAI official spec. use it for returning multiple
@@ -616,9 +615,6 @@ definitions:
         type: boolean
       typical_p:
         type: number
-      use_fast_tokenizer:
-        description: AutoGPTQ
-        type: boolean
     required:
     - file
     type: object
@@ -1252,6 +1248,21 @@ paths:
           schema:
             $ref: '#/definitions/proto.VADResponse'
       summary: Detect voice fragments in an audio stream
+  /video:
+    post:
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/schema.OpenAIRequest'
+      responses:
+        "200":
+          description: Response
+          schema:
+            $ref: '#/definitions/schema.OpenAIResponse'
+      summary: Creates a video given a prompt.
 securityDefinitions:
   BearerAuth:
     in: header

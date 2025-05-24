@@ -812,6 +812,30 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/video": {
+            "post": {
+                "summary": "Creates a video given a prompt.",
+                "parameters": [
+                    {
+                        "description": "query params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/schema.OpenAIRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Response",
+                        "schema": {
+                            "$ref": "#/definitions/schema.OpenAIResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -1636,7 +1660,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "model_base_name": {
-                    "description": "AutoGPTQ",
                     "type": "string"
                 },
                 "n": {
@@ -1720,10 +1743,6 @@ const docTemplate = `{
                 },
                 "typical_p": {
                     "type": "number"
-                },
-                "use_fast_tokenizer": {
-                    "description": "AutoGPTQ",
-                    "type": "boolean"
                 }
             }
         },
